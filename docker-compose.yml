@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  item-app:
+    image: wushie/item-app:v1  # Menggunakan Docker image "wushie/item-app:v1"
+    ports:
+      - "80:8080"  # Melakukan port mapping dari port 80 host ke port 8080 container
+    depends_on:
+      - item-db  # Menyatakan bahwa service "item-app" harus menunggu hingga "item-db" berjalan
+    restart: always  # Kebijakan restart: selalu restart jika container berhenti
+
+  item-db:
+    image: mongo:3  # Menggunakan Docker image "mongo:3"
+    volumes:
+      - app-db:/data/db  # Menghubungkan volume "app-db" ke path "/data/db" di dalam container
+    restart: always  # Kebijakan restart: selalu restart jika container berhenti
+
+volumes:
+  app-db:  # Mendefinisikan volume "app-db"
