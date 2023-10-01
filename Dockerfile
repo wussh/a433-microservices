@@ -1,4 +1,5 @@
 FROM golang:1.15-alpine
+LABEL maintainer="andrianta.321@gmail.com"
 
 WORKDIR /go/src/github.com/dicodingacademy/karsajobs
 ENV GO111MODULE=on
