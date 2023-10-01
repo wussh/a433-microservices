@@ -7,6 +7,23 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  lint-dockerfile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install hadolint
+        run: |
+          mkdir -p ~/bin
+          wget -O ~/bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+          chmod +x ~/bin/hadolint
+
+      - name: Run hadolint
+        run: |
+          ~/bin/hadolint Dockerfile
+
   build-and-push-image:
     runs-on: ubuntu-latest
     permissions:
