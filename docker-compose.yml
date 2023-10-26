@@ -1,0 +1,40 @@
+version: '3'
+services:
+  rabbitmq:
+    image: "rabbitmq:management"
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
+
+  order-service:
+    build:
+      context: ./order-service # Path to the directory containing your order service Dockerfile
+    container_name: order-service
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    depends_on:
+      - rabbitmq
+    environment:
+      AMQP_URL: "amqp://rabbitmq:5672" # Use the service name as the host (RabbitMQ)
+
+  shipping-service:
+    build:
+      context: ./shipping-service # Path to the directory containing your shipping service Dockerfile
+    container_name: shipping-service
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+    depends_on:
+      - rabbitmq
+    environment:
+      AMQP_URL: "amqp://rabbitmq:5672" # Use the service name as the host (RabbitMQ)
+
+networks:
+  app-network:
+    driver: bridge
