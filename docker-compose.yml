@@ -10,8 +10,7 @@ services:
       - app-network
 
   order-service:
-    build:
-      context: ./order-service # Path to the directory containing your order service Dockerfile
+    image: ghcr.io/wussh/a433-microservices:order-service
     container_name: order-service
     ports:
       - "3000:3000"
@@ -20,11 +19,10 @@ services:
     depends_on:
       - rabbitmq
     environment:
-      AMQP_URL: "amqp://rabbitmq:5672" # Use the service name as the host (RabbitMQ)
+      AMQP_URL: "amqp://rabbitmq:5672"
 
   shipping-service:
-    build:
-      context: ./shipping-service # Path to the directory containing your shipping service Dockerfile
+    image: ghcr.io/wussh/a433-microservices:shipping-service
     container_name: shipping-service
     ports:
       - "3001:3001"
@@ -33,7 +31,7 @@ services:
     depends_on:
       - rabbitmq
     environment:
-      AMQP_URL: "amqp://rabbitmq:5672" # Use the service name as the host (RabbitMQ)
+      AMQP_URL: "amqp://rabbitmq:5672"
 
 networks:
   app-network:
